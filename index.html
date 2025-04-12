@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>Lords of Heaven</title>
+        <link rel="stylesheet" href="css/main.css">
+	</head>
+	<body>
+		<script type="importmap">
+		{
+			"imports":
+			{
+				"three": "../libs/threejs/three.module.js",
+				"three/addons/": "../libs/threejs/addons/"
+			}
+		}
+		</script>
+        <script type="module">
+			import { MainControl } from "./js/control/MainControl.js";
+
+			document.addEventListener("DOMContentLoaded", function()
+            {
+				new MainControl();
+            });
+        </script>
+        <div id="sceneContainer" class="fullScreen" style="background-color: #000000;"></div>
+	</body>
+</html>

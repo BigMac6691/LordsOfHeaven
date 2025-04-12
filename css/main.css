@@ -1,0 +1,380 @@
+body
+{
+    width: 100vw;
+    height: 100vh;
+}
+
+body, p
+{
+    margin: 0;
+    padding: 0;
+}
+
+.fullScreen
+{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+.commonPanel
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.commonTitleDiv
+{
+    font-size: 3em;
+    font-weight: bold;
+    text-align: center;
+    color: #00ff00;
+    /* width: 100vw; */
+    width: fit-content;
+    padding: 0.5em 1em;
+    /* padding-top: 1em;
+    padding-bottom: 1em; */
+}
+
+.commonContentDiv
+{
+    color: #ffffff;
+}
+
+.introPanel
+{
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #0000ff;
+    background-color: transparent;
+}
+
+.introPanel div:first-child
+{
+    width: 45%;
+    height: 20%;
+    font-size: 6em;
+}
+
+.introPanel path
+{
+    fill: transparent;
+}
+
+.introPanel text
+{
+    fill: #0000ff;
+}
+
+.introPanel div:last-child
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 5em;
+    width: 100%;
+    height: 25%;
+}
+
+.introPanel button
+{
+    background-color: transparent;
+    color: #d4af37;
+    border: none;
+    border-radius: 1em;
+    padding: 0.25em;
+    font-size: 3em;
+}
+
+.introPanel button:hover
+{
+    box-shadow: 0px 0px 0.5em 0.5em #d4af37;
+    transition: 0.5s;
+}
+
+.startGamePanel
+{
+    color: #ffffff;
+    background-color: transparent;
+}
+
+.startGamePanel hr
+{
+    width: 50vw;
+}
+
+.startGamePanel .commonContentDiv
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 0.5em;
+}
+
+.startGamePanel .commonContentDiv input[type="number"]
+{
+    color: #00ff00;
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    width: 6.5em;
+}
+
+.startGamePanel .commonContentDiv > div:first-child
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1em;
+    row-gap: 0.5em;
+    justify-content: center;
+}
+
+.startGamePanel .commonContentDiv span
+{
+    justify-self: end;
+}
+
+.createPlayerPanel
+{
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    background-color: #000000;
+    border: 3px solid #00ff00 ;
+    border-radius: 5px;
+    width: fit-content;
+}
+
+.createPlayerPanel .commonContentDiv
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1em;
+    row-gap: 0.5em;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 1em;
+}
+
+.createPlayerPanel .commonContentDiv span
+{
+    justify-self: end;   
+}
+
+.threeColumnGrid
+{
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    column-gap: 1em;
+    row-gap: 0.5em;
+    justify-content: center;
+    align-items: center;
+}
+
+.infoPanel
+{
+    position: absolute;
+    border: 3px solid #00ff00;
+    border-radius: 5px;
+    width: fit-content;
+    color: #0000ff;
+    background-color: #222222;
+    pointer-events: none;
+}
+
+.infoPanel p
+{
+    padding: 0.1em 0.5em;
+    font-size: 1.5em;
+}
+
+.infoPanel div:first-child
+{
+    padding: 0.5em 1em 0.25em;
+    color: #000000;
+    background-color: #ffffff;
+    pointer-events: none;
+}
+
+.infoPanel div:first-child p
+{
+    text-align: center;
+    font-weight: bold;
+    font-size: 2em;
+}
+
+.actionPanel
+{
+    position: absolute;
+    border: 3px solid #ff0000;
+    border-radius: 5px;
+    width: fit-content;
+    color: #0000ff;
+    background-color: #222222;
+}
+
+.actionPanel > div
+{
+    padding: 0.5em 1em 0.25em;
+}
+
+.actionPanel div:first-child
+{
+    color: #000000;
+    background-color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+    font-size: 2em;
+}
+
+.actionPanel div:nth-child(2) > p
+{
+    padding-top: 0.05em;
+    padding-bottom: 0.05em;
+    font-size: 1.5em;
+}
+
+.actionPanel > div:last-child
+{
+    display: flex;
+    justify-content: flex-end;
+    gap: 1em;
+    background-color: #999999;
+}
+
+.mainPanel
+{
+    position: absolute;
+    border: 3px solid;
+    border-radius: 5px;
+    width: fit-content;
+    background-color: #222222;
+}
+
+.fleetPanel
+{
+    border-color:#ff0000;
+    color: #bcc6cc;
+    background-color: #222222;
+}
+
+.gamePanel
+{
+    left: 5px;
+    top: 5px;
+    border-color: #d4af37;
+}
+
+.titleDiv
+{
+    padding: 0.5em 1em 0.25em;
+    color: #000000;
+    background-color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+}
+
+.titleDiv p:first-child
+{
+    font-size: smaller;
+}
+
+.titleDiv p:last-child
+{
+    font-size: larger;
+}
+
+.contentDiv
+{
+    padding: 0.5em 1em 0.25em;
+    color: #bcc6cc;
+}
+
+.footerDiv
+{
+    padding: 0.5em 1em 0.25em;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1em;
+    background-color: #999999;
+}
+
+.invest
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.invest p:first-child
+{
+    font-size: smaller;
+}
+
+.sliderDiv
+{
+    display: block;
+}
+
+.sliderDiv p:first-child
+{
+    /* color: #d4af37; #bcc6cc */
+    font-size: larger;
+    font-weight: bold;
+    text-align: left;
+    padding-bottom: 0.5em;
+}
+
+.sliderDiv > div
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.sliderDiv > div > p:first-child
+{
+    font-size: smaller;
+    text-align: center;
+}
+
+.sliderDiv > div > div
+{
+    display: flex;
+}
+
+.sliderDiv > div > div > p
+{
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    width: 3em;
+}
+
+.colourBox
+{
+    width: auto;
+    height: 1em;
+}
+
+.hostile
+{
+    color: #ff0000;
+}
+
+.friendly
+{
+    color: #00ff00;
+}
