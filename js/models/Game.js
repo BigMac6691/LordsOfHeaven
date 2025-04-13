@@ -68,6 +68,8 @@ class Game
         this.options.players.forEach(player => this.addNewPlayer(player));
 
         this.gamePanel = new GamePanel();
+        this.ping = new Ping(this.modelFactory.stars);
+        this.pathfinder = new Pathfinder(this.modelFactory.stars);
 
         this.endGameTurn(); // may want to do something different if a game is simply loaded/resumed
 
@@ -98,14 +100,6 @@ class Game
     endGameTurn()
     {
         console.time("endGameTurn");
-
-        const ping = new Ping(this.modelFactory.stars);
-        const rings = ping.ping("STAR14", 3);
-        console.log("rings", rings);
-
-        const pathfinder = new Pathfinder(this.modelFactory.stars);
-        const path = pathfinder.findPath("STAR14", "STAR0", false, 1.1);
-        console.log(path);
 
         this.applyMoves();
         this.applyResearch(); // research will impact the cost of building ships
@@ -447,6 +441,8 @@ class Game
 
         if(!this.currentPlayer)
             this.endGameTurn();
+        else if(this.currentPlayer.ai)
+            this.currentPlayer.ai.playTurn();
         else
             this.gamePanel.showCurrentPlayer();
     }

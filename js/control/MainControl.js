@@ -3,7 +3,6 @@ import { IntroPanel } from "../ui/IntroPanel.js";
 import { StartGamePanel } from "../ui/StartGamePanel.js";
 
 import { Player } from "../models/Player.js"; // only for testing
-
 import { Game } from "../models/Game.js";
 
 class MainControl
@@ -47,7 +46,7 @@ class MainControl
             // return;
 
             // only while testing!!!
-            this.players.push(new Player("Garry", "#ff0000"));
+            this.players.push(new Player("Garry", "#ff0000", "Steve"));
             // this.players.push(new Player("James", "#00ff00"));
             this.players.push(new Player("MacGregor", "#0000ff"));
         }

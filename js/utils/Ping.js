@@ -54,6 +54,37 @@ class Ping
 
         return result;
     }
+
+    // in the case where the player's stars are in separate groups it will return them all as a single set not as separate sets (that may overlap)
+    // it simply returns all stars adjacent to a star owned by the provided player
+    borders(playerId)
+    {
+        console.time(`${playerId}'s borders`);
+
+        const owned = new Set();
+        const unowned = new Set();
+        
+        this.stars.values().forEach(star => 
+        {
+            if(star?.government?.controller?.id === playerId)
+            {
+                star.wormholes.forEach(hole => 
+                {
+                    const target = hole.getTarget(star.id);
+
+                    if(target?.government?.controller?.id !== playerId)
+                    {
+                        owned.add(star);
+                        unowned.add(target);
+                    }
+                });
+            }
+        });
+
+        console.timeEnd(`${playerId}'s borders`);
+
+        return [owned, unowned];
+    }
 }
 
 export {Ping};
