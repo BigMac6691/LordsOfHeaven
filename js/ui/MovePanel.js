@@ -69,11 +69,10 @@ class MovePanel extends CommonPanel
     }
 
     // will be passed the clicked on star as source, the clicked on star is owned by current player
-    // here we are moving ships from this star to other adjacent stars
+    // here we are moving ships FROM this star TO other adjacent stars
     displayOwn(source)
     {
         const player = window.game.currentPlayer;
-        const playerId = window.game.currentPlayer.id;
         const available = Fleets.getPlayersFleetsAt(player, source.id).reduce((sum, fleet) => sum + fleet.ships, 0);
         const sliderList = [];
         const friendly = [];
@@ -81,9 +80,9 @@ class MovePanel extends CommonPanel
         source.wormholes.forEach(hole => 
         {
             const target = hole.getTarget(source.id);
-            const key = `${playerId}.${source.id}.${target.id}`;
+            const key = `${player.id}.${source.id}.${target.id}`;
             const current = Orders.MOVES.has(key) ? Orders.MOVES.get(key).amount : 0;
-            const hostile = target?.government?.controller?.id !== playerId;
+            const hostile = target?.government?.controller?.id !== player.id;
 
             if(!hostile)
                 friendly.push(target);
@@ -102,7 +101,7 @@ class MovePanel extends CommonPanel
             this.autoMove.add(this.createOption("none", "None"));
             friendly.forEach(dest => this.autoMove.add(this.createOption(dest.id, dest.name)));
 
-            const key = `${playerId}.${source.id}`;
+            const key = `${player.id}.${source.id}`;
 
             if(Orders.AUTO_MOVE.has(key))
                 this.autoMove.value = Orders.AUTO_MOVE.get(key).target;
@@ -128,13 +127,12 @@ class MovePanel extends CommonPanel
     displayOther(source)
     {
         const player = window.game.currentPlayer;
-        const playerId = window.game.currentPlayer.id;
 
         source.wormholes.forEach(hole => 
         {
             const attacker = hole.getTarget(source.id);
 
-            if(attacker?.government?.controller?.id === playerId) // only consider adjacent stars controlled by current player
+            if(attacker?.government?.controller?.id === player.id) // only consider adjacent stars controlled by current player
             {
                 if(this.moves.size > 0)
                     this.contentDiv.append(document.createElement("hr"));
@@ -145,7 +143,7 @@ class MovePanel extends CommonPanel
                 attacker.wormholes.forEach(target => 
                 {
                     const attacked = target.getTarget(attacker.id);
-                    const key = `${playerId}.${attacker.id}.${attacked.id}`;
+                    const key = `${player.id}.${attacker.id}.${attacked.id}`;
                     const order = Orders.MOVES.get(key);
 
                     if(order)
@@ -166,7 +164,7 @@ class MovePanel extends CommonPanel
 
     handleSubmit(evt)
     {
-        const playerId = window.game.currentPlayer.id;
+        const player = window.game.currentPlayer;
 
         this.moves.forEach((targets, sourceKey) => 
         {
@@ -175,10 +173,10 @@ class MovePanel extends CommonPanel
             // list in this context is an array of sliders, each slider is a single target
             targets.list.forEach((slider, targetKey) => 
             {
-                const key = `${playerId}.${sourceKey}.${targetKey}`;
+                const key = `${player.id}.${sourceKey}.${targetKey}`;
 
                 if(slider.valueAsNumber > 0)
-                    Orders.set("move", key, {player: playerId, source: sourceKey, target: targetKey, amount: slider.valueAsNumber});
+                    Orders.set("move", key, {player: player.id, source: sourceKey, target: targetKey, amount: slider.valueAsNumber});
                 else
                     Orders.delete("move", key);
             });
@@ -186,12 +184,12 @@ class MovePanel extends CommonPanel
 
         if(this.autoMove)
         {
-            const key = `${playerId}.${this.source.id}`;
+            const key = `${player.id}.${this.source.id}`;
 
             if(this.autoMove.value === "none")
                 Orders.delete("automove", key);
             else
-                Orders.set("automove", key, {player: playerId, source: this.source.id, target: this.autoMove.value});
+                Orders.set("automove", key, {player: player.id, source: this.source.id, target: this.autoMove.value});
         }
 
         this.hide();

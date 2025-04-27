@@ -56,7 +56,7 @@ class Ping
     }
 
     // in the case where the player's stars are in separate groups it will return them all as a single set not as separate sets (that may overlap)
-    // it simply returns all stars adjacent to a star owned by the provided player
+    // it returns two sets of stars; those owned by the player that have adjacent stars that are not owned in one set and all those unowned stars in another set
     borders(playerId)
     {
         console.time(`${playerId}'s borders`);
