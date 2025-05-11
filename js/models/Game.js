@@ -119,6 +119,8 @@ class Game
             this.modelFactory.notifyModelUpdate({model: "star", id: star.id});
         });
 
+        console.log("Fleets at end of turn", Fleets.FLEETS);
+
         this.playerOrder = this.determinePlayerOrder();
 
         this.nextPlayer();
@@ -183,7 +185,7 @@ class Game
                 player.bank -= spend;
             });
 
-            console.assert(player.bank >= 0, finalOrders);
+            console.assert(player.bank >= 0, player.bank, finalOrders);
 
             if(player.bank < 0)
                 player.bank = 0;
