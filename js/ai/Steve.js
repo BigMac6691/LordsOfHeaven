@@ -102,6 +102,7 @@ class Steve extends AI
             });
         };
 
+        this.moveInterior(analysisFriendly);
         this.determineSpending();
 
         console.groupEnd();
@@ -136,6 +137,8 @@ class Steve extends AI
 
             const ratio = enemyShips ? friendlyShips / enemyShips : Infinity;
             const excess = Math.max(Math.floor(friendlyShips - enemyShips * this.defenceThreshold), 0);
+
+            console.log("================ excess", excess, friendlyShips, enemyShips, enemyShips * this.defenceThreshold);
 
             analysis.set(friendlyStar.id, {star: friendlyStar, friendlyShips, enemyShips, enemyStars, ratio, excess, enemyEconomySum});
         });
@@ -183,29 +186,66 @@ class Steve extends AI
         return analysis;
     }
 
-    moveInterior()
+    // move ships from safe locations to the front, the trick is which part of the front :)
+    // simplest is to move to nearest enemy, will do that for now
+    moveInterior(analysisFriendly)
     {
         const starMap = window.game.modelFactory.stars;
-        const maxIndustry = Math.max(...[...starMap.values()].map(star => star.economy.industry));
-
-        console.log("maxIndustry", maxIndustry);
-
+        
         for(const star of starMap.values())
         {
-            if(star?.government?.controller?.id !== this.player.id)
+            if(star?.government?.controller?.id !== this.player.id || analysisFriendly.has(star.id))
                 continue;
+            
+            console.log("interior star", star);
+
+            let shortest = Infinity;
+            const pathMap = new Map();
+
+            for(const borderStar of analysisFriendly.values())
+            {
+                let path = window.game.pathfinder.findPath(star.id, borderStar.star.id, true, 0.5);
+
+                if(path.length < shortest)
+                {
+                    shortest = path.length;
+
+                    pathMap.clear();
+                    pathMap.set(borderStar, path);
+                }
+                else if(path.length === shortest)
+                    pathMap.set(borderStar, path);
+            }
+             
+            console.log("nearest border star ", pathMap);
+            const enemyCount = Array.from(pathMap.keys()).reduce((sum, analysis) => sum + analysis.enemyStars.length, 0);
+
+            for(const entry of pathMap.entries())
+            {
+                console.log("entry", entry[1][0], entry[1][0].path);
+
+                const totalShips = Fleets.getPlayersFleetsAt(this.player, entry[1][0].path[0]).reduce((shipCount, fleet) => shipCount + fleet.ships, 0);
+                const amount = Math.floor(totalShips * entry[0].enemyStars.length / enemyCount);
+
+                if(amount === 0)
+                    continue;
+
+                const key = `${this.player.id}.${entry[1][0].path[0]}.${entry[1][0].path[1]}`;
+
+                console.log(key, amount, enemyCount, totalShips, entry[0].enemyStars.length);
+
+                if(Orders.MOVES.has(key))
+                    Orders.MOVES.get(key).amount += amount;
+                else
+                    Orders.set("move", key, {player: this.player.id, source: entry[1][0].path[0], target: entry[1][0].path[1], amount: amount});
+            }
         }
     }
 
     determineSpending()
     {
         const starMap = [...window.game.modelFactory.stars.values()].filter(star => star?.government?.controller?.id === this.player.id);
-
-        console.log("starMap", starMap);
-
         const maxIndustry = Math.max(...starMap.map(star => star.economy.industry));
-
-        console.log("maxIndustry", maxIndustry);
 
         for(const star of starMap)
         {
@@ -214,7 +254,7 @@ class Steve extends AI
 
             const industry = +star.economy.industry;
 
-            if(industry < maxIndustry / 2)
+            if(industry < maxIndustry / 4)
             {
                 const key = `${this.player.id}.${star.id}.industry`;
 
@@ -225,7 +265,7 @@ class Steve extends AI
                 let key = `${this.player.id}.research`;
                 
                 if(Orders.RESEARCH.has(key))
-                    Orders.RESEARCH.get(key).value += industry;
+                    Orders.RESEARCH.get(key).value += this.researchThreshold * industry;
                 else
                     Orders.set("research", key, {player: this.player.id, type: "research", amount: this.researchThreshold * industry});
 
@@ -235,8 +275,6 @@ class Steve extends AI
                 key = `${this.player.id}.${star.id}.ships`;
                 Orders.set("build", key, {player: this.player.id, source: star.id, type: "ships", amount: this.shipThreshold * industry});
             }
-
-            console.log(Orders.RESEARCH, Orders.BUILD);
         };
     }
 }

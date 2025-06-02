@@ -211,7 +211,8 @@ class ViewGalaxy
                 break;
 
             case "fleet":
-                Fleets.getPlayersFleetsAt(player, star.id).forEach(fleet => content.push(`${fleet.commander.name}:  ${fleet.ships} ships`));
+                // Fleets.getPlayersFleetsAt(player, star.id).forEach(fleet => content.push(`${fleet.commander.name}:  ${fleet.ships} ships`));
+                Fleets.getFleetsAt(star.id).forEach(fleet => content.push(`${fleet.commander.name}:  ${fleet.ships} ships`));
                 break;
 
             default:

@@ -120,6 +120,10 @@ class Game
         });
 
         console.log("Fleets at end of turn", Fleets.FLEETS);
+        console.log("Build Orders at end of turn", Orders.BUILD);
+        console.log("Move Orders at end of turn", Orders.MOVES);
+        console.log("Research Orders at end of turn", Orders.RESEARCH);
+        console.log("Map at end of turn", this.modelFactory.stars);
 
         this.playerOrder = this.determinePlayerOrder();
 
@@ -281,14 +285,20 @@ class Game
     {
         const count = Math.floor(amount / player.techBase);
         const remainder = amount % player.techBase;
-        const fleets = Fleets.getPlayersFleetsAt(player, star.id);
 
-        if(fleets.length === 0)
-            Fleets.addFleet(new Fleet(player, star.id, count));
-        else if(fleets.length > 1)
-            Fleets.mergeFleets(player, star.id).ships += count;
-        else
-            fleets[0].ships += count;
+        if(count > 0)
+        {
+            const fleets = Fleets.getPlayersFleetsAt(player, star.id);
+
+            console.log("Game#buildShips()", amount, player.techBase, count);
+
+            if(fleets.length === 0)
+                Fleets.addFleet(new Fleet(player, star.id, count));
+            else if(fleets.length > 1)
+                Fleets.mergeFleets(player, star.id).ships += count;
+            else
+                fleets[0].ships += count;
+        }
 
         return remainder;
     }

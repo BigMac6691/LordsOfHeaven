@@ -43,7 +43,7 @@ class Pathfinder
 
             if(head === target)
             {
-                console.log("path found", move);
+                // console.log("path found", move);
 
                 results.push(move);
 
@@ -75,7 +75,7 @@ class Pathfinder
             }
         } // while !done
 
-        console.log("final list of paths", results);
+        // console.log("final list of paths", results);
         console.timeEnd(timerkey);
 
         return results;
